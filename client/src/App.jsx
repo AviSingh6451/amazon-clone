@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { CartProvider } from './context/CartContext'
 import Navbar from './components/Navbar'
+import VoiceCommand from './components/VoiceCommand'
 import Home from './pages/Home'
 import Products from './pages/Products'
 import Login from './pages/Login'
@@ -15,6 +16,7 @@ function App() {
       <CartProvider>
         <BrowserRouter>
           <Navbar />
+          <VoiceCommand />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
