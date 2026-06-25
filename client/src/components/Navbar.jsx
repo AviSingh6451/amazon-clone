@@ -14,49 +14,78 @@ function Navbar() {
 
   return (
     <nav style={{
-      backgroundColor: '#131921',
-      padding: '10px 20px',
+      background: 'rgba(10, 10, 10, 0.95)',
+      backdropFilter: 'blur(20px)',
+      padding: '15px 40px',
       display: 'flex',
       justifyContent: 'space-between',
-      alignItems: 'center'
+      alignItems: 'center',
+      position: 'sticky',
+      top: 0,
+      zIndex: 1000,
+      borderBottom: '1px solid rgba(255, 153, 0, 0.2)',
+      boxShadow: '0 4px 30px rgba(0, 0, 0, 0.5)'
     }}>
+
+      {/* Logo */}
       <Link to="/" style={{
-        color: 'white',
-        fontSize: '24px',
+        color: '#f90',
+        fontSize: '26px',
         textDecoration: 'none',
-        fontWeight: 'bold'
+        fontWeight: '800',
+        letterSpacing: '1px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px'
       }}>
-        🛒 Amazon Clone
+        ⚡ AmazonClone
       </Link>
 
+      {/* Nav Links */}
       <div style={{
         display: 'flex',
-        gap: '20px',
+        gap: '30px',
         alignItems: 'center'
       }}>
         <Link to="/products" style={{
-          color: 'white',
-          textDecoration: 'none'
-        }}>
+          color: '#ccc',
+          textDecoration: 'none',
+          fontSize: '15px',
+          fontWeight: '500',
+          letterSpacing: '0.5px'
+        }}
+          onMouseOver={e => e.target.style.color = '#f90'}
+          onMouseOut={e => e.target.style.color = '#ccc'}
+        >
           Products
         </Link>
 
         {user && (
           <Link to="/cart" style={{
-            color: 'white',
+            color: '#ccc',
             textDecoration: 'none',
-            position: 'relative'
-          }}>
-            🛒 Cart
+            fontSize: '15px',
+            fontWeight: '500',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '5px'
+          }}
+            onMouseOver={e => e.target.style.color = '#f90'}
+            onMouseOut={e => e.target.style.color = '#ccc'}
+          >
+            🛒
             {cartCount > 0 && (
               <span style={{
                 backgroundColor: '#f90',
                 color: 'black',
                 borderRadius: '50%',
-                padding: '2px 6px',
+                width: '22px',
+                height: '22px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 fontSize: '12px',
-                fontWeight: 'bold',
-                marginLeft: '5px'
+                fontWeight: '800'
               }}>
                 {cartCount}
               </span>
@@ -66,18 +95,24 @@ function Navbar() {
 
         {user ? (
           <>
-            <span style={{ color: 'white' }}>
-              Hello, {user.name}
+            <span style={{
+              color: '#f90',
+              fontSize: '14px',
+              fontWeight: '600'
+            }}>
+              Hey, {user.name} 👋
             </span>
             <button
               onClick={handleLogout}
               style={{
-                backgroundColor: '#f90',
-                border: 'none',
-                padding: '8px 16px',
-                borderRadius: '4px',
+                background: 'transparent',
+                border: '1px solid #f90',
+                color: '#f90',
+                padding: '8px 20px',
+                borderRadius: '25px',
                 cursor: 'pointer',
-                fontWeight: 'bold'
+                fontSize: '14px',
+                fontWeight: '600'
               }}
             >
               Logout
@@ -86,18 +121,21 @@ function Navbar() {
         ) : (
           <>
             <Link to="/login" style={{
-              color: 'white',
-              textDecoration: 'none'
+              color: '#ccc',
+              textDecoration: 'none',
+              fontSize: '15px'
             }}>
               Login
             </Link>
             <Link to="/signup" style={{
-              backgroundColor: '#f90',
+              background: 'linear-gradient(135deg, #f90, #ff6600)',
               color: 'black',
-              padding: '8px 16px',
-              borderRadius: '4px',
+              padding: '10px 24px',
+              borderRadius: '25px',
               textDecoration: 'none',
-              fontWeight: 'bold'
+              fontWeight: '700',
+              fontSize: '14px',
+              boxShadow: '0 4px 15px rgba(255, 153, 0, 0.4)'
             }}>
               Sign Up
             </Link>
