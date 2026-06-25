@@ -16,7 +16,6 @@ function Login() {
     e.preventDefault()
     setLoading(true)
     setError('')
-
     try {
       const response = await axios.post(
         'http://localhost:5000/api/auth/login',
@@ -33,77 +32,169 @@ function Login() {
 
   return (
     <div style={{
-      maxWidth: '400px',
-      margin: '50px auto',
-      padding: '30px',
-      border: '1px solid #ddd',
-      borderRadius: '8px'
+      minHeight: '100vh',
+      backgroundColor: '#0a0a0a',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '20px'
     }}>
-      <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>
-        Login
-      </h2>
+      {/* Glow Effect */}
+      <div style={{
+        position: 'fixed',
+        width: '400px',
+        height: '400px',
+        background: 'radial-gradient(circle, rgba(255,153,0,0.1) 0%, transparent 70%)',
+        borderRadius: '50%',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        pointerEvents: 'none'
+      }} />
 
-      {error && (
-        <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>
-      )}
-
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '15px' }}>
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{
-              width: '100%',
-              padding: '8px',
-              marginTop: '5px',
-              border: '1px solid #ddd',
-              borderRadius: '4px'
-            }}
-          />
+      <div style={{
+        width: '100%',
+        maxWidth: '420px',
+        background: 'rgba(255,255,255,0.03)',
+        border: '1px solid rgba(255,255,255,0.08)',
+        borderRadius: '24px',
+        padding: '40px',
+        backdropFilter: 'blur(20px)'
+      }}>
+        {/* Header */}
+        <div style={{ textAlign: 'center', marginBottom: '35px' }}>
+          <div style={{
+            fontSize: '40px',
+            marginBottom: '15px'
+          }}>⚡</div>
+          <h2 style={{
+            fontSize: '28px',
+            fontWeight: '800',
+            color: '#fff',
+            marginBottom: '8px'
+          }}>
+            Welcome Back
+          </h2>
+          <p style={{ color: '#666', fontSize: '14px' }}>
+            Sign in to your account
+          </p>
         </div>
 
-        <div style={{ marginBottom: '15px' }}>
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
+        {error && (
+          <div style={{
+            backgroundColor: 'rgba(255,68,68,0.1)',
+            border: '1px solid rgba(255,68,68,0.3)',
+            color: '#ff4444',
+            padding: '12px',
+            borderRadius: '10px',
+            marginBottom: '20px',
+            fontSize: '14px',
+            textAlign: 'center'
+          }}>
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit}>
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{
+              color: '#888',
+              fontSize: '13px',
+              fontWeight: '600',
+              letterSpacing: '1px',
+              textTransform: 'uppercase',
+              display: 'block',
+              marginBottom: '8px'
+            }}>
+              Email
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              placeholder="you@example.com"
+              style={{
+                width: '100%',
+                padding: '14px 18px',
+                backgroundColor: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '12px',
+                color: '#fff',
+                fontSize: '15px',
+                outline: 'none'
+              }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '30px' }}>
+            <label style={{
+              color: '#888',
+              fontSize: '13px',
+              fontWeight: '600',
+              letterSpacing: '1px',
+              textTransform: 'uppercase',
+              display: 'block',
+              marginBottom: '8px'
+            }}>
+              Password
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="••••••••"
+              style={{
+                width: '100%',
+                padding: '14px 18px',
+                backgroundColor: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '12px',
+                color: '#fff',
+                fontSize: '15px',
+                outline: 'none'
+              }}
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
             style={{
               width: '100%',
-              padding: '8px',
-              marginTop: '5px',
-              border: '1px solid #ddd',
-              borderRadius: '4px'
+              padding: '16px',
+              background: 'linear-gradient(135deg, #f90, #ff6600)',
+              border: 'none',
+              borderRadius: '12px',
+              fontSize: '16px',
+              fontWeight: '800',
+              cursor: 'pointer',
+              color: 'black',
+              boxShadow: '0 8px 25px rgba(255,153,0,0.4)',
+              letterSpacing: '0.5px'
             }}
-          />
-        </div>
+          >
+            {loading ? 'Signing in...' : 'Sign In →'}
+          </button>
+        </form>
 
-        <button
-          type="submit"
-          disabled={loading}
-          style={{
-            width: '100%',
-            padding: '10px',
-            backgroundColor: '#f90',
-            border: 'none',
-            borderRadius: '4px',
-            fontSize: '16px',
-            fontWeight: 'bold',
-            cursor: 'pointer'
-          }}
-        >
-          {loading ? 'Logging in...' : 'Login'}
-        </button>
-      </form>
-
-      <p style={{ textAlign: 'center', marginTop: '15px' }}>
-        Don't have an account?{' '}
-        <Link to="/signup">Sign Up</Link>
-      </p>
+        <p style={{
+          textAlign: 'center',
+          marginTop: '25px',
+          color: '#666',
+          fontSize: '14px'
+        }}>
+          Don't have an account?{' '}
+          <Link to="/signup" style={{
+            color: '#f90',
+            fontWeight: '700',
+            textDecoration: 'none'
+          }}>
+            Sign Up
+          </Link>
+        </p>
+      </div>
     </div>
   )
 }
