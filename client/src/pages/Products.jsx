@@ -1,10 +1,18 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { useCart } from '../context/CartContext'
+import { useAuth } from '../context/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 function Products() {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [addedId, setAddedId] = useState(null)
+
+  const { addToCart } = useCart()
+  const { user } = useAuth()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -22,6 +30,16 @@ function Products() {
     fetchProducts()
   }, [])
 
+  const handleAddToCart = async (product) => {
+    if (!user) {
+      navigate('/login')
+      return
+    }
+    await addToCart(product)
+    setAddedId(product._id)
+    setTimeout(() => setAddedId(null), 2000)
+  }
+
   if (loading) return (
     <div style={{ textAlign: 'center', padding: '50px' }}>
       Loading products...
@@ -37,7 +55,6 @@ function Products() {
   if (products.length === 0) return (
     <div style={{ textAlign: 'center', padding: '50px' }}>
       <h2>No products yet!</h2>
-      <p>Products you add will appear here</p>
     </div>
   )
 
@@ -77,17 +94,21 @@ function Products() {
             }}>
               ₹{product.price}
             </p>
-            <button style={{
-              width: '100%',
-              padding: '10px',
-              backgroundColor: '#f90',
-              border: 'none',
-              borderRadius: '4px',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              marginTop: '10px'
-            }}>
-              Add to Cart
+            <button
+              onClick={() => handleAddToCart(product)}
+              style={{
+                width: '100%',
+                padding: '10px',
+                backgroundColor: addedId === product._id ? 'green' : '#f90',
+                border: 'none',
+                borderRadius: '4px',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                marginTop: '10px',
+                color: addedId === product._id ? 'white' : 'black'
+              }}
+            >
+              {addedId === product._id ? '✅ Added!' : 'Add to Cart'}
             </button>
           </div>
         ))}
