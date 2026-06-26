@@ -11,7 +11,7 @@ function VoiceCommand() {
   const recognitionRef = useRef(null)
   const isListeningRef = useRef(false)
   const navigate = useNavigate()
-  const { addToCart, removeFromCart, cart, getCart } = useCart()
+ const { addToCart, removeFromCart, cart, getCart } = useCart()
   const { user, logout } = useAuth()
 
   const speak = (text) => {
@@ -257,7 +257,7 @@ function VoiceCommand() {
       isListeningRef.current = true
       setListening(true)
       if (user) getCart()
-      startListening()
+      setTimeout(() => startListening(), 500)
     }
   }
 
