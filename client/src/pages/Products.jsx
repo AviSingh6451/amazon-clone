@@ -113,14 +113,16 @@ function Products() {
         }}>
           {filtered.map((product) => (
             <div
-              key={product._id}
-              style={{
-                background: 'rgba(255,255,255,0.03)',
-                border: '1px solid rgba(255,255,255,0.08)',
-                borderRadius: '20px',
-                overflow: 'hidden',
-                transition: 'all 0.3s ease'
-              }}
+  key={product._id}
+  onClick={() => navigate(`/products/${product._id}`)}
+  style={{
+    background: 'rgba(255,255,255,0.03)',
+    border: '1px solid rgba(255,255,255,0.08)',
+    borderRadius: '20px',
+    overflow: 'hidden',
+    transition: 'all 0.3s ease',
+    cursor: 'pointer'
+  }}
               onMouseOver={e => {
                 e.currentTarget.style.border = '1px solid rgba(255,153,0,0.4)'
                 e.currentTarget.style.transform = 'translateY(-8px)'
