@@ -7,13 +7,15 @@ import { useNavigate } from 'react-router-dom'
 function Products() {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
   const [addedId, setAddedId] = useState(null)
   const [search, setSearch] = useState('')
+  const [activeCategory, setActiveCategory] = useState('All')
 
   const { addToCart } = useCart()
   const { user } = useAuth()
   const navigate = useNavigate()
+
+  const categories = ['All', 'Electronics', 'Clothing', 'Books', 'Home']
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -21,7 +23,7 @@ function Products() {
         const response = await axios.get('http://localhost:5000/api/products')
         setProducts(response.data)
       } catch (err) {
-        setError('Failed to load products')
+        console.log(err)
       } finally {
         setLoading(false)
       }
@@ -29,21 +31,27 @@ function Products() {
     fetchProducts()
   }, [])
 
-  const handleAddToCart = async (product) => {
+  const handleAddToCart = async (e, product) => {
+    e.stopPropagation()
     if (!user) { navigate('/login'); return }
     await addToCart(product)
     setAddedId(product._id)
     setTimeout(() => setAddedId(null), 2000)
   }
 
-  const filtered = products.filter(p =>
-    p.title.toLowerCase().includes(search.toLowerCase())
-  )
+  const filtered = products.filter(p => {
+    const matchesSearch = p.title.toLowerCase().includes(search.toLowerCase())
+    const matchesCategory = activeCategory === 'All' || p.category === activeCategory
+    return matchesSearch && matchesCategory
+  })
 
   if (loading) return (
     <div style={{
-      textAlign: 'center',
-      padding: '100px',
+      minHeight: '100vh',
+      backgroundColor: '#0a0a0a',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       color: '#f90',
       fontSize: '20px'
     }}>
@@ -59,7 +67,7 @@ function Products() {
     }}>
 
       {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: '50px' }}>
+      <div style={{ textAlign: 'center', marginBottom: '40px' }}>
         <div style={{
           fontSize: '13px',
           color: '#f90',
@@ -93,15 +101,53 @@ function Products() {
             borderRadius: '50px',
             color: '#fff',
             fontSize: '16px',
-            outline: 'none'
+            outline: 'none',
+            marginBottom: '30px'
           }}
         />
+
+        {/* Category Filter */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '12px',
+          flexWrap: 'wrap'
+        }}>
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              style={{
+                padding: '10px 24px',
+                borderRadius: '50px',
+                border: activeCategory === cat
+                  ? 'none'
+                  : '1px solid rgba(255,255,255,0.1)',
+                background: activeCategory === cat
+                  ? 'linear-gradient(135deg, #f90, #ff6600)'
+                  : 'rgba(255,255,255,0.03)',
+                color: activeCategory === cat ? 'black' : '#888',
+                fontWeight: '700',
+                fontSize: '14px',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Products Grid */}
       {filtered.length === 0 ? (
-        <div style={{ textAlign: 'center', color: '#666', padding: '50px' }}>
-          No products found
+        <div style={{
+          textAlign: 'center',
+          color: '#666',
+          padding: '50px',
+          fontSize: '18px'
+        }}>
+          No products found in this category
         </div>
       ) : (
         <div style={{
@@ -113,16 +159,16 @@ function Products() {
         }}>
           {filtered.map((product) => (
             <div
-  key={product._id}
-  onClick={() => navigate(`/products/${product._id}`)}
-  style={{
-    background: 'rgba(255,255,255,0.03)',
-    border: '1px solid rgba(255,255,255,0.08)',
-    borderRadius: '20px',
-    overflow: 'hidden',
-    transition: 'all 0.3s ease',
-    cursor: 'pointer'
-  }}
+              key={product._id}
+              onClick={() => navigate(`/products/${product._id}`)}
+              style={{
+                background: 'rgba(255,255,255,0.03)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: '20px',
+                overflow: 'hidden',
+                transition: 'all 0.3s ease',
+                cursor: 'pointer'
+              }}
               onMouseOver={e => {
                 e.currentTarget.style.border = '1px solid rgba(255,153,0,0.4)'
                 e.currentTarget.style.transform = 'translateY(-8px)'
@@ -141,8 +187,7 @@ function Products() {
                   style={{
                     width: '100%',
                     height: '220px',
-                    objectFit: 'cover',
-                    transition: 'transform 0.3s ease'
+                    objectFit: 'cover'
                   }}
                 />
                 <div style={{
@@ -191,7 +236,7 @@ function Products() {
                     ₹{product.price.toLocaleString()}
                   </span>
                   <button
-                    onClick={() => handleAddToCart(product)}
+                    onClick={(e) => handleAddToCart(e, product)}
                     style={{
                       background: addedId === product._id
                         ? 'linear-gradient(135deg, #00c853, #00a040)'
