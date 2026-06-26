@@ -56,19 +56,27 @@ function VoiceCommand() {
       navigate('/checkout')
 
     } else if (
+      command.includes('wishlist') ||
+      command.includes('wish list') ||
+      command.includes('saved items')
+    ) {
+      speak('Opening your wishlist!')
+      navigate('/wishlist')
+
+    } else if (
+      command.includes('order history') ||
+      command.includes('my orders') ||
+      command.includes('past orders')
+    ) {
+      speak('Opening your orders!')
+      navigate('/orders')
+
+    } else if (
       command.includes('login') ||
       command.includes('sign in')
     ) {
       speak('Going to login!')
       navigate('/login')
-
-    } else if (
-      command.includes('signup') ||
-      command.includes('sign up') ||
-      command.includes('register')
-    ) {
-      speak('Going to signup!')
-      navigate('/signup')
 
     } else if (
       command.includes('logout') ||
@@ -79,6 +87,14 @@ function VoiceCommand() {
       logout()
       navigate('/login')
 
+    } else if (
+      command.includes('signup') ||
+      command.includes('sign up') ||
+      command.includes('register')
+    ) {
+      speak('Going to signup!')
+      navigate('/signup')
+
     // ADD TO CART
     } else if (command.includes('add')) {
       let productName = command
@@ -87,6 +103,7 @@ function VoiceCommand() {
         .replace('to cart', '')
         .replace('in my cart', '')
         .replace('in cart', '')
+        .replace('the', '')
         .trim()
 
       speak(`Looking for ${productName}`)
@@ -96,12 +113,12 @@ function VoiceCommand() {
           'http://localhost:5000/api/products'
         )
         const products = response.data
-
-        // fuzzy match - check if any word matches
         const found = products.find(p => {
           const title = p.title.toLowerCase()
           const words = productName.split(' ')
-          return words.some(word => word.length > 2 && title.includes(word))
+          return words.some(word =>
+            word.length > 2 && title.includes(word)
+          )
         })
 
         if (found && user) {
@@ -111,28 +128,33 @@ function VoiceCommand() {
           speak('Please login first!')
           navigate('/login')
         } else {
-          speak(`Sorry, I could not find ${productName}`)
+          speak(`Sorry I could not find ${productName}`)
         }
       } catch (error) {
         speak('Something went wrong!')
       }
 
     // REMOVE FROM CART
-    } else if (command.includes('remove') || command.includes('delete')) {
+    } else if (
+      command.includes('remove') ||
+      command.includes('delete')
+    ) {
       let productName = command
         .replace('remove', '')
         .replace('delete', '')
         .replace('from my cart', '')
         .replace('from cart', '')
+        .replace('the', '')
         .trim()
 
       if (cart && cart.items && cart.items.length > 0) {
         const found = cart.items.find(item => {
           const title = item.title.toLowerCase()
           const words = productName.split(' ')
-          return words.some(word => word.length > 2 && title.includes(word))
+          return words.some(word =>
+            word.length > 2 && title.includes(word)
+          )
         })
-
         if (found) {
           await removeFromCart(found.productId)
           speak(`${found.title} removed from cart!`)
@@ -150,11 +172,14 @@ function VoiceCommand() {
       navigate(`/products?search=${searchTerm}`)
 
     // HELP
-    } else if (command.includes('help') || command.includes('what can you do')) {
-      speak('You can say: go home, open products, open cart, checkout, add iPhone to cart, remove shoes from cart, logout')
+    } else if (
+      command.includes('help') ||
+      command.includes('what can you do')
+    ) {
+      speak('You can say: go home, open products, open cart, open wishlist, my orders, add iPhone to cart, remove shoes from cart, checkout, logout')
 
     } else {
-      speak(`I did not understand: ${command}. Say help to see commands!`)
+      speak(`I did not understand. Say help to see all commands!`)
     }
   }, [cart, user, navigate, addToCart, removeFromCart, logout])
 
