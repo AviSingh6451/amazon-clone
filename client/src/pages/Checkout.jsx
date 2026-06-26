@@ -29,9 +29,23 @@ function Checkout() {
       return
     }
     setLoading(true)
-    await clearCart()
-    setLoading(false)
-    setOrderPlaced(true)
+    try {
+      await axios.post(
+        'http://localhost:5000/api/orders/place',
+        {
+          items: cart.items,
+          totalAmount: total,
+          address
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      await clearCart()
+      setOrderPlaced(true)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (orderPlaced) {
