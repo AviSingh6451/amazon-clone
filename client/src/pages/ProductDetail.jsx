@@ -24,7 +24,7 @@ function ProductDetail() {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/products/${id}`
+          `https://amazon-clone-backend-rpst.onrender.com/api/products/${id}`
         )
         setProduct(response.data)
       } catch (error) {
@@ -47,7 +47,7 @@ function ProductDetail() {
     if (!user) { navigate('/login'); return }
     try {
       await axios.post(
-        'http://localhost:5000/api/wishlist/add',
+        'https://amazon-clone-backend-rpst.onrender.com/api/wishlist/add',
         {
           productId: product._id,
           title: product.title,

@@ -19,7 +19,7 @@ function Signup() {
     setError('')
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/auth/signup',
+        'https://amazon-clone-backend-rpst.onrender.com/api/auth/signup',
         { name, email, password }
       )
       login(response.data.user, response.data.token)

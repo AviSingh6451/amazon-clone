@@ -19,7 +19,7 @@ function Wishlist() {
   const fetchWishlist = async () => {
     try {
       const response = await axios.get(
-        'http://localhost:5000/api/wishlist',
+        'https://amazon-clone-backend-rpst.onrender.com/api/wishlist',
         { headers: { Authorization: `Bearer ${token}` } }
       )
       setWishlist(response.data)
@@ -33,7 +33,7 @@ function Wishlist() {
   const removeFromWishlist = async (productId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/api/wishlist/remove/${productId}`,
+        `https://amazon-clone-backend-rpst.onrender.com/api/wishlist/remove/${productId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       )
       setWishlist(response.data)

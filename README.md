@@ -9,6 +9,31 @@ A simple Amazon-style clone built with a React + Vite frontend and an Express + 
 - `server/config/db.js` - MongoDB connection setup
 - `server/server.js` - Express server entry point
 
+## Features
+
+- User authentication: signup, login, and logout
+- Product browsing and search
+- Shopping cart: add, remove, and view cart items
+- Checkout flow
+- Wishlist and order history pages
+- Voice command support for navigation and cart actions
+
+## Voice commands supported
+
+- `go home`
+- `open products`
+- `open cart`
+- `checkout`, `place order`, `buy now`
+- `wishlist`, `wish list`, `saved items`
+- `order history`, `my orders`, `past orders`
+- `login`, `sign in`
+- `logout`, `log out`, `sign out`
+- `signup`, `sign up`, `register`
+- `add <product> to cart`
+- `remove <product> from cart`
+- `search <term>`
+- `help`
+
 ## Setup
 
 1. Install dependencies for the frontend:
@@ -55,6 +80,7 @@ Then open the local Vite URL shown in the terminal, usually `http://localhost:51
 - The backend uses `server/config/db.js` to connect to MongoDB.
 - The frontend is served by Vite from the `client/` folder.
 - If you want to change ports, update the `PORT` value in `server/.env`.
+- The voice command feature requires a browser that supports the Web Speech API (Chrome is recommended).
 
 ## Recommended workflow
 
@@ -65,5 +91,5 @@ Then open the local Vite URL shown in the terminal, usually `http://localhost:51
 ## Optional improvements
 
 - Add start scripts to `server/package.json` for convenience, such as `"start": "node server.js"`.
-- Add proper authentication, product pages, and cart state management in the frontend.
 - Add deployment instructions once the project is production-ready.
+- Add tests for backend routes and frontend components.

@@ -17,7 +17,7 @@ function OrderHistory() {
   const fetchOrders = async () => {
     try {
       const response = await axios.get(
-        'http://localhost:5000/api/orders/history',
+        'https://amazon-clone-backend-rpst.onrender.com/api/orders/history',
         { headers: { Authorization: `Bearer ${token}` } }
       )
       setOrders(response.data)

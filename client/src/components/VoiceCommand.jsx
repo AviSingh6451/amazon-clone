@@ -110,7 +110,7 @@ function VoiceCommand() {
 
       try {
         const response = await axios.get(
-          'http://localhost:5000/api/products'
+          'https://amazon-clone-backend-rpst.onrender.com/api/products'
         )
         const products = response.data
         const found = products.find(p => {

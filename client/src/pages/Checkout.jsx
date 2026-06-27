@@ -31,7 +31,7 @@ function Checkout() {
     setLoading(true)
     try {
       await axios.post(
-        'http://localhost:5000/api/orders/place',
+        'https://amazon-clone-backend-rpst.onrender.com/api/orders/place',
         {
           items: cart.items,
           totalAmount: total,

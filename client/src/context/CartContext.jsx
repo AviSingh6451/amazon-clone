@@ -11,7 +11,7 @@ export const CartProvider = ({ children }) => {
   const getCart = async () => {
     try {
       const response = await axios.get(
-        'http://localhost:5000/api/cart',
+        'https://amazon-clone-backend-rpst.onrender.com/api/cart',
         { headers: { Authorization: `Bearer ${token}` } }
       )
       setCart(response.data)
@@ -23,7 +23,7 @@ export const CartProvider = ({ children }) => {
   const addToCart = async (product) => {
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/cart/add',
+        'https://amazon-clone-backend-rpst.onrender.com/api/cart/add',
         {
           productId: product._id,
           title: product.title,
@@ -41,7 +41,7 @@ export const CartProvider = ({ children }) => {
   const removeFromCart = async (productId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/api/cart/remove/${productId}`,
+        `https://amazon-clone-backend-rpst.onrender.com/api/cart/remove/${productId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       )
       setCart(response.data)
@@ -53,7 +53,7 @@ export const CartProvider = ({ children }) => {
   const updateQuantity = async (productId, quantity) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/cart/update/${productId}`,
+        `https://amazon-clone-backend-rpst.onrender.com/api/cart/update/${productId}`,
         { quantity },
         { headers: { Authorization: `Bearer ${token}` } }
       )
@@ -66,7 +66,7 @@ export const CartProvider = ({ children }) => {
   const clearCart = async () => {
     try {
       await axios.delete(
-        'http://localhost:5000/api/cart/clear',
+        'https://amazon-clone-backend-rpst.onrender.com/api/cart/clear',
         { headers: { Authorization: `Bearer ${token}` } }
       )
       setCart(null)
